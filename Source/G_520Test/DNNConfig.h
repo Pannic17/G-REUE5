@@ -26,9 +26,6 @@ int NewWidth = 0;
 int NewHeight = 0;
 int PaddingWidth = 0;
 int PaddingHeight = 0;
-float ObjectThreshold = 0.3;
-float ConfigThreshold = 0.3;
-float NMSThreshold = 0.5;
 
 
 int Yolov3Width = 608;
@@ -49,3 +46,7 @@ const float Anchors640[3][6] = { {10.0,  13.0, 16.0,  30.0,  33.0,  23.0},
 
 const float Anchors1280[4][6] = { {19, 27, 44, 40, 38, 94},{96, 68, 86, 152, 180, 137},{140, 301, 303, 264, 238, 542},
 					   {436, 615, 739, 380, 925, 792} };
+
+
+// const FVector4 RealWorldBoundary = FVector4(0, 0, 0, 0);
+// const FVector4 VirtualWorldBoundary = FVector4(0, 0, 0, 0);

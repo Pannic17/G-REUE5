@@ -102,6 +102,42 @@ public:
 	void DetectYolov3Body(Mat& Frame);
 	void DetectSSDResFace(Mat& Frame);
 
+	/* Property for Adjustment */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int SceneTopBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int SceneLeftBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int SceneRightBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int SceneBottomBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MapTopBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MapLeftBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MapRightBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MapBottomBound = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int HeightCoefficient = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float HeightOffset = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = 0, ClampMax = 1))
+	float ObjectThreshold = 0.3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = 0, ClampMax = 1))
+	float ConfigThreshold = 0.3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = 0, ClampMax = 1))
+	float NMSThreshold = 0.5;
+
+
+	UFUNCTION(BlueprintCallable, Category = "CVProcessor")
+	FVector2D Convert2MapPosition(float InputX, float InputY);
+	UFUNCTION(BlueprintCallable, Category = "CVProcessor")
+	float CalculateHeight(float InputW, float InputH);
+	
+	
+
 private:
 	// Define private variables and helper functions
 	float* Anchors;

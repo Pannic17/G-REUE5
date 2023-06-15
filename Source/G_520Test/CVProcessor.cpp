@@ -397,6 +397,39 @@ void ACVProcessor::DetectSSDResFace(Mat& Frame)
 	}
 }
 
+FVector2D ACVProcessor::Convert2MapPosition(float InputX, float InputY)
+{
+	float OutputX = InputX;
+	float OutputY = InputY;
+	if (InputX < SceneLeftBound)
+	{
+		OutputX = (float) SceneLeftBound;
+	} else if (InputX > SceneRightBound)
+	{
+		OutputX = (float) SceneRightBound;
+	}
+	if (InputY < SceneTopBound)
+	{
+		OutputY = (float) SceneTopBound;
+	} else if (InputY > SceneBottomBound)
+	{
+		OutputY = (float) SceneBottomBound;
+	}
+	float SceneWidth = (float) (SceneRightBound - SceneLeftBound);
+	float SceneHeight = (float) (SceneBottomBound - SceneTopBound);
+	float MapWidth = (float) (MapRightBound - MapLeftBound);
+	float MapHeight = (float) (MapBottomBound - MapTopBound);
+	OutputX = (float) (MapLeftBound + (OutputX - SceneLeftBound) / SceneWidth * MapWidth);
+	OutputY = (float) (MapTopBound + (OutputY - SceneTopBound) / SceneHeight * MapHeight);
+	return FVector2D(OutputX, OutputY);
+}
+
+float ACVProcessor::CalculateHeight(float InputW, float InputH)
+{
+	float Size = sqrt(InputW * InputW + InputH * InputH);
+	return Size * HeightCoefficient + HeightOffset;
+}
+
 // Convert captured image from OpenCV Mat to Texture2D for Unreal
 UTexture2D* ACVProcessor::ConvertMat2Texture2D(const Mat& InMat)
 {
