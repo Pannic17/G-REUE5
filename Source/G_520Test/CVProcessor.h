@@ -108,21 +108,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int SceneLeftBound = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int SceneRightBound = 0;
+	int SceneRightBound = 100;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int SceneBottomBound = 0;
+	int SceneBottomBound = 100;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MapTopBound = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MapLeftBound = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int MapRightBound = 0;
+	int MapRightBound = 1920;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int MapBottomBound = 0;
+	int MapBottomBound = 1080;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int HeightCoefficient = 0;
+	int HeightCoefficient = 0.5;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float HeightOffset = 0;
+	float HeightOffset = 200;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = 0, ClampMax = 1))
 	float ObjectThreshold = 0.3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = 0, ClampMax = 1))
@@ -132,7 +132,7 @@ public:
 
 
 	UFUNCTION(BlueprintCallable, Category = "CVProcessor")
-	FVector2D Convert2MapPosition(float InputX, float InputY);
+	void Convert2MapPosition(float InputX, float InputY, float& OutputX, float& OutputY);
 	UFUNCTION(BlueprintCallable, Category = "CVProcessor")
 	float CalculateHeight(float InputW, float InputH);
 	

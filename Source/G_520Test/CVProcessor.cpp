@@ -397,10 +397,10 @@ void ACVProcessor::DetectSSDResFace(Mat& Frame)
 	}
 }
 
-FVector2D ACVProcessor::Convert2MapPosition(float InputX, float InputY)
+void ACVProcessor::Convert2MapPosition(float InputX, float InputY, float &OutputX, float &OutputY)
 {
-	float OutputX = InputX;
-	float OutputY = InputY;
+	OutputX = InputX;
+	OutputY = InputY;
 	if (InputX < SceneLeftBound)
 	{
 		OutputX = (float) SceneLeftBound;
@@ -421,7 +421,8 @@ FVector2D ACVProcessor::Convert2MapPosition(float InputX, float InputY)
 	float MapHeight = (float) (MapBottomBound - MapTopBound);
 	OutputX = (float) (MapLeftBound + (OutputX - SceneLeftBound) / SceneWidth * MapWidth);
 	OutputY = (float) (MapTopBound + (OutputY - SceneTopBound) / SceneHeight * MapHeight);
-	return FVector2D(OutputX, OutputY);
+	UE_LOG(LogTemp, Warning, TEXT("X: %f, Y: %f"), OutputX, OutputY);
+	// return FVector2D(OutputX, OutputY);
 }
 
 float ACVProcessor::CalculateHeight(float InputW, float InputH)
