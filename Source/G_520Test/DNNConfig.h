@@ -26,6 +26,8 @@ int NewWidth = 0;
 int NewHeight = 0;
 int PaddingWidth = 0;
 int PaddingHeight = 0;
+TArray<float> xArray;
+TArray<float> yArray;
 
 
 int Yolov3Width = 608;

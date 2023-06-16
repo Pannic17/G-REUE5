@@ -63,17 +63,18 @@ void ACVProcessor::Tick(float DeltaTime)
 	if (Yolov5Count)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Detected Heads: %d"), Yolov5Count);
-		TArray<float> xArray;
-		TArray<float> yArray;
+		// TArray<float> xArray;
+		// TArray<float> yArray;
 		TArray<float> wArray;
 		TArray<float> hArray;
-		for (int i = 0; i < Yolov5Result.boxes.size(); ++i)
-		{
-			xArray.Add(Yolov5Result.center[i][0]);
-			yArray.Add(Yolov5Result.center[i][1]);
-			UE_LOG(LogTemp, Warning, TEXT("Detected At X %f, Y %f."), Yolov5Result.center[i][0], Yolov5Result.center[i][1]);
-			UE_LOG(LogTemp, Warning, TEXT("Detected Size W %f, H %f."), Yolov5Result.size[i][0], Yolov5Result.size[i][1]);
-		}
+		// for (int i = 0; i < Yolov5Result.boxes.size(); ++i)
+		// {
+		// 	xArray.Add(Yolov5Result.center[i][0]);
+		// 	yArray.Add(Yolov5Result.center[i][1]);
+		// 	UE_LOG(LogTemp, Warning, TEXT("Detected At X %f, Y %f."), Yolov5Result.center[i][0], Yolov5Result.center[i][1]);
+		// 	UE_LOG(LogTemp, Warning, TEXT("Detected At X %f, Y %f."), xArray[i], yArray[i]);
+		// 	UE_LOG(LogTemp, Warning, TEXT("Detected Size W %f, H %f."), Yolov5Result.size[i][0], Yolov5Result.size[i][1]);
+		// }
 		ShowYolov5Result(Yolov5Count, xArray, yArray);
 	}
 	if (UseYolov3)
@@ -163,6 +164,8 @@ void ACVProcessor::DetectYolov5Head(Mat& Frame)
 	Yolov5Count = 0;
 	int Width = Frame.cols;
 	int Height = Frame.rows;
+	xArray = VACUNT;
+	yArray = VACUNT;
 	if (DoResizeImage)
 	{
 		
@@ -171,12 +174,12 @@ void ACVProcessor::DetectYolov5Head(Mat& Frame)
 		Mat Yolov5Bolb = blobFromImage(Resized, 1 / 255.0, Size(Yolov5Width, Yolov5Height), Scalar(0, 0, 0), true, false);
 
 		Yolov5Net.setInput(Yolov5Bolb);
-		UE_LOG(LogTemp, Warning, TEXT("Yolov5Outs Size %llu"), Yolov5Outs.size());
+		// UE_LOG(LogTemp, Warning, TEXT("Yolov5Outs Size %llu"), Yolov5Outs.size());
 		for (size_t i = 0; i < Yolov5Outs.size(); ++i)
 		{
 			Mat output = Yolov5Outs[i];
-			UE_LOG(LogTemp, Warning, TEXT("Data Size %d"), *output.size);
-			UE_LOG(LogTemp, Warning, TEXT("Data Addr %p"), output.data);
+			// UE_LOG(LogTemp, Warning, TEXT("Data Size %d"), *output.size);
+			// UE_LOG(LogTemp, Warning, TEXT("Data Addr %p"), output.data);
 		}
 		
 		Yolov5Net.forward(Yolov5Outs, GetOutputsNames(Yolov5Net));
@@ -234,7 +237,7 @@ void ACVProcessor::DetectYolov5Head(Mat& Frame)
 								RawResult.confidences.push_back(static_cast<float>(ClassScore));
 								RawResult.boxes.push_back(cv::Rect(leftBound, topBound, static_cast<int>(boxWidth * RatioWidth), static_cast<int>(boxHeight * RatioHeight)));
 								RawResult.classID.push_back(0);
-								RawResult.center.push_back({ centerX, centerY });
+								RawResult.center.push_back({ centerX + boxWidth, centerY });
 								RawResult.size.push_back({ boxWidth, boxHeight });
 							}
 						}
@@ -258,6 +261,10 @@ void ACVProcessor::DetectYolov5Head(Mat& Frame)
 			Yolov5Result.size.push_back(RawResult.size[index]);
 			Yolov5Count++;
 			UE_LOG(LogTemp, Warning, TEXT("Detected At X %d, Y %d, W %d, H %d."), box.x, box.y, box.width, box.height);
+			xArray.Add(box.x + box.width / 2);
+			yArray.Add(box.y + box.height / 2);
+			// UE_LOG(LogTemp, Warning, TEXT("Center At X %f, Y %f."), xArray[i], yArray[i]);
+			
 		}
 		UE_LOG(LogTemp, Warning, TEXT("Detected %d Head(s)."), Yolov5Count);
 
